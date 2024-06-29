@@ -1,5 +1,5 @@
-# 2-3 Tree
-# balanced tree data structure with up to 2 data items per node
+# 2-3 Tree - balanced tree data structure with up to 2 data items per node
+# Duplicate entries not allowed and prints the whole tree after each insert
 
 class Node:
 	def __init__(self, data, par = None):
@@ -108,9 +108,10 @@ class Tree:
 		if self.root is None:
 			self.root = Node(item)
 		else:
-			self.root._insert(Node(item))
-			while self.root.parent:
-				self.root = self.root.parent
+			if self.find(item) == False:
+				self.root._insert(Node(item))
+				while self.root.parent:
+					self.root = self.root.parent
 		return True
 	
 	def find(self, item):
@@ -119,26 +120,24 @@ class Tree:
 	def remove(self, item):
 		self.root.remove(item)
 		
-	def printTop2Tiers(self):
-		print ('----Top 2 Tiers----')
-		print (str(self.root.data))
-		for child in self.root.child:
-			print (str(child.data), end=' ')
-		print(' ')
+	def current_tree(self):
+		print('----Current Tree----')
+		current_level = [self.root]  # Start with the root node
+
+		while current_level:
+			next_level = []  # Collect nodes for the next level
+			for node in current_level:
+				print(str(node.data), end=' ')  # Print data of current node
+				next_level.extend(node.child)  # Add children to next level
+			print()  # Newline after each level
+			current_level = next_level  # Move to the next level
 		
 	def preorder(self):
 		print ('----Preorder----')
 		self.root._preorder()
-		
-tree = Tree()
-
-lst = [13, 7, 24, 15, 4, 29, 20, 16, 19, 1, 5, 22, 17]
-for item in lst:
-	tree.insert(item)
-tree.printTop2Tiers()
 
 # for i in range (25):
 	# tree.insert(i)
-	# tree.printTop2Tiers()
+	# tree.current_tree()
 # tree.preorder()
 # print (tree.find(16))
